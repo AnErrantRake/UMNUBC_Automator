@@ -1,5 +1,5 @@
-var INPUT_FORM_ID = '1cVkmr-uSlPwswDTizGnramy4Tr5IKdz-duMIUe0_yzk'; //the edit id of an existing suggestion form
-var NOTIFICATION_EMAIL = 'jmalignant@gmail.com';
+var INPUT_FORM_ID = '[edit id]'; //the edit id of an existing suggestion form
+var NOTIFICATION_EMAIL = '[notification email]';
 var FORM_TITLE = 'UPDATE ME'
 var FORM_URI_PREFIX = 'https://docs.google.com/forms/d/';
 
