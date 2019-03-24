@@ -5,6 +5,7 @@ function onOpen(e) {
       entries: [
         {name: 'Generate ballot form', functionName: 'genBallot'}, 
         {name: 'Generate suggestion form', functionName: 'genSuggestion'},
+        {name: 'Calculate vote winner', functionName: 'vote_calculation'},
         {name: 'Update loaner book title', functionName: 'loaner_manualUpdate'},
       ]
         },

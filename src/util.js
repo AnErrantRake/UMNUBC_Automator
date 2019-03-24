@@ -75,6 +75,14 @@ function util_Warning(title,desc){
                                       SpreadsheetApp.getUi().ButtonSet.YES_NO);
 }
 
+function util_Notice(title, desc, info){
+  
+  var scriptProperties = PropertiesService.getScriptProperties();
+  
+  return SpreadsheetApp.getUi().alert(scriptProperties.getProperty(title), 
+                                      (scriptProperties.getProperty(desc) + info), 
+                                      SpreadsheetApp.getUi().ButtonSet.OK);
+}
 
 function util_PublicPropertyPrompt(key){
   var documentProperties = PropertiesService.getDocumentProperties();
@@ -149,6 +157,18 @@ function util_concatArray(array){
   return out;
 }
 
+
+//takes an array and makes it a comma separated string
+function util_concatArrayComma(array){
+  
+  var out = '';
+  
+  for(var i = 0; i<array.length; i++){
+    out = out + array[i] + ', '
+  }
+  
+  return out;
+}
 
 
 //simple comparison with logging

@@ -13,6 +13,11 @@ function getDefaultScriptProperties(){
     CONFIG_WARNING_TITLE:'This is a manual OVERRIDE!',
     CONFIG_WARNING_DESC:'Using this option is not recommended outside of the initial setup. The automator keeps these properties updated as it gets used. Only use this option if you understand the changes you\'re making. \n\n Are you sure you want to continue?',
     
+    VOTE_CALC_TIE_TITLE:'The vote resulted in a tie!',
+    VOTE_CALC_TIE_DESC:'The tied books were:\n',
+    VOTE_CALC_WINNER_TITLE:'We have a winner!',
+    VOTE_CALC_WINNER_DESC:'The winner is:\n',
+    
     LOANERGEN_WARNING_TITLE:'A loaner form already exists!',
     LOANERGEN_WARNING_DESC:'There is already a loaner form configured in the automator. Continuing will replace that form with a new form. Any previous responses will not be transferred. Perhaps you meant "Update Loaner Form". \n\nAre you sure you want to continue?',
     
