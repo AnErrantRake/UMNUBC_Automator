@@ -4,7 +4,8 @@ function onOpen(e) {
       name: 'Automator',
       entries: [
         {name: 'Generate ballot form', functionName: 'genBallot'}, 
-        {name: 'Generate suggestion form', functionName: 'genSuggestion'}, 
+        {name: 'Generate suggestion form', functionName: 'genSuggestion'},
+        {name: 'Update loaner book title', functionName: 'loaner_manualUpdate'},
       ]
         },
     'setup' : {

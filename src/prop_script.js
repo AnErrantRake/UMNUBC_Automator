@@ -30,9 +30,9 @@ function getDefaultScriptProperties(){
     suggestion_response_count_desc:'Count of responses on suggestion form.',
     loaner_form_url_desc:'Direct link to edit version of the book loaner form.',
     loaner_current_book_desc:'Title of this month\'s current book. Used for loaner form automation.',
-    loaner_have_count_desc:'Count of loaner form users indicating willingness to loan this month\'s book.',
-    loaner_have_need_desc:'Count of loaner form users indicating need to acquire this month\'s book.',
-    loaner_matches_desc:'Count of matches between loaner form users for this month\'s book.',
+    loaner_have_count_desc:'Count of loaner form users indicating willingness to loan this month\'s book. This is the total number, not the amount remaining.',
+    loaner_need_count_desc:'Count of loaner form users indicating need to acquire this month\'s book. This is the total number, not the amount remaining.',
+    loaner_matches_count_desc:'Count of matches between loaner form users for this month\'s book.',
     template_form_url_desc:'Direct link to edit version of the form used as template for all other forms.',
     
     //descriptions for private properties - property name + '_desc'

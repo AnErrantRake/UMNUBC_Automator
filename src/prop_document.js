@@ -9,8 +9,8 @@ function getDefaultDocumentProperties(){
       loaner_form_url: '',
       loaner_current_book: '',
       loaner_have_count: '',
-      loaner_have_need: '',
-      loaner_matches: '',
+      loaner_need_count: '',
+      loaner_matches_count: '',
       template_form_url: '',
   };
 }

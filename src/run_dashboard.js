@@ -1,4 +1,6 @@
 function dashboard() {
+  util_guaranteeScriptsAvailable();
+  
   var dashboard = util_getContainerSpreadsheet().getSheetByName(
     PropertiesService.getScriptProperties().getProperty('DASHBOARD_SHEETNAME'));
   dashboard_updateValues();

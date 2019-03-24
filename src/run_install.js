@@ -1,5 +1,6 @@
 //some redundancies here - room for optimization
 function install(){
+  util_guaranteeScriptsAvailable();
   
   var warning = util_Warning('INSTALL_WARNING_TITLE','INSTALL_WARNING_DESC');
   if(warning == SpreadsheetApp.getUi().Button.NO) {
@@ -9,6 +10,7 @@ function install(){
   }
   var container = util_getContainerSpreadsheet();
   
+
   resetDocumentProperties();
   resetScriptProperties();
   resetUserProperties();

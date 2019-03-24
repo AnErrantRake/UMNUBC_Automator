@@ -1,5 +1,6 @@
 function configState(){
-  
+  util_guaranteeScriptsAvailable();
+    
   if(! util_isInstalled()){
     return;
   }

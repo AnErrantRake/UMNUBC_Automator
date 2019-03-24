@@ -1,4 +1,6 @@
 function genLoaner() {
+  util_guaranteeScriptsAvailable();
+  
   var oldFormURL = PropertiesService.getDocumentProperties().getProperty('loaner_form_url'); 
   if(oldFormURL != null && oldFormURL.length > 0){
     var response = util_Warning('LOANERGEN_WARNING_TITLE','LOANERGEN_WARNING_DESC');
