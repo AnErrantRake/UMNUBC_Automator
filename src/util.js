@@ -105,6 +105,20 @@ function util_PrivatePropertyPrompt(key){
                                       SpreadsheetApp.getUi().ButtonSet.OK_CANCEL);
 }
 
+function util_sendEmail(toList,ccList,bccList,subject,body){
+  var to = util_concatArrayComma(toList);
+  var cc = util_concatArrayComma(ccList);
+  var bcc = util_concatArrayComma(bccList);
+  
+  Logger.log("Sending email to: " + to + cc + bcc);
+  MailApp.sendEmail(
+    to,
+    subject,
+    body,
+    {cc: cc, bcc: bcc, name: 'UMNUBC Automator'}
+  );
+}
+
 function util_getDefaultCoverItem(){
   return {
     header : {title : '', desc : ''},

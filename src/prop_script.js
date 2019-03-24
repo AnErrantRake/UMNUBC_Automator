@@ -21,6 +21,13 @@ function getDefaultScriptProperties(){
     LOANERGEN_WARNING_TITLE:'A loaner form already exists!',
     LOANERGEN_WARNING_DESC:'There is already a loaner form configured in the automator. Continuing will replace that form with a new form. Any previous responses will not be transferred. Perhaps you meant "Update Loaner Form". \n\nAre you sure you want to continue?',
     
+    LOANER_EMAIL_SUCCESS_SUBJECT:'UMNUBC Loan Automator - Match for ',
+    LOANER_EMAIL_SUCCESS_BODY:'Our extremely advanced algorithm has identified a potential match!\nOne of you (see CC) has an available book, and the other would like to make use of that book.\nPlease reach out to each other to arrange the terms and conditions of your book loan.\n\n\nThank you for using the Loan Automator, brought to you by UMNUBC!',
+    LOANER_EMAIL_HAVE_SUBJECT:'UMNUBC Loan Automator - Have ',
+    LOANER_EMAIL_HAVE_BODY:'We have received your submission to loan a book. We will inform you should someone apply to make use of your generous offer.\n\n\nThank you for using the Loan Automator, brought to you by UMNUBC!',
+    LOANER_EMAIL_NEED_SUBJECT:'UMNUBC Loan Automator - Need ',
+    LOANER_EMAIL_NEED_BODY:'We have received your request for a book loan. We will inform you should a third party come forward with a copy of the requested book.\n\n\nThank you for using the Loan Automator, brought to you by UMNUBC!',
+    
     ERROR_CONTAINER_BOUND:'Script is not container-bound. Project needs to be bound to an active spreadsheet!',
     ERROR_NOT_INSTALLED:'Automator has not been installed!',
     

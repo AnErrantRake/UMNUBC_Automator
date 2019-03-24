@@ -13,7 +13,6 @@ function onOpen(e) {
       name: 'Automator Setup',
       entries: [
         {name: 'Configure Automator', functionName: 'configState'},
-        {name: 'Update Secrets', functionName: 'configSecrets'},
         {name: 'Force Update', functionName: 'install_forceUpdate'},
         {name: 'Generate Loaner Form', functionName: 'genLoaner'}, 
         {name: 'Install Automator', functionName: 'install'}, 
