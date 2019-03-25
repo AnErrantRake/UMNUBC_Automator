@@ -84,7 +84,7 @@ function loaner(event) {
       [],
       [],
       PropertiesService.getScriptProperties().getProperty('LOANER_EMAIL_' + responseType.toUpperCase() + '_SUBJECT') + responseBook,
-      PropertiesService.getScriptProperties().getProperty('LOANER_EMAIL_' + responseType.toUpperCase() + '_BODY') + responseBook
+      PropertiesService.getScriptProperties().getProperty('LOANER_EMAIL_' + responseType.toUpperCase() + '_BODY')
     );
     Logger.log("No match found - emailing status and exiting");
     return;
@@ -123,7 +123,7 @@ function loaner(event) {
       [responseEmail,match],
       [Session.getActiveUser().getEmail()],
       PropertiesService.getScriptProperties().getProperty('LOANER_EMAIL_SUCCESS_SUBJECT') + responseBook,
-      PropertiesService.getScriptProperties().getProperty('LOANER_EMAIL_SUCCESS_BODY') + responseBook
+      PropertiesService.getScriptProperties().getProperty('LOANER_EMAIL_SUCCESS_BODY')
     );
     
   //add receipt
@@ -144,7 +144,7 @@ function loaner(event) {
       [],
       [],
       PropertiesService.getScriptProperties().getProperty('LOANER_EMAIL_' + responseType.toUpperCase() + '_SUBJECT') + responseBook,
-      PropertiesService.getScriptProperties().getProperty('LOANER_EMAIL_' + responseType.toUpperCase() + '_BODY') + responseBook
+      PropertiesService.getScriptProperties().getProperty('LOANER_EMAIL_' + responseType.toUpperCase() + '_BODY')
     );
   }
   
@@ -191,11 +191,10 @@ function loaner_updateBookTitle(){
   var documentProperties = PropertiesService.getDocumentProperties();
   
   var formURL = documentProperties.getProperty('loaner_form_url');
-  if(formURL != null && formURL.length > 0){
-  
+  var bookTitle = documentProperties.getProperty('loaner_current_book');
+  if(bookTitle != null && bookTitle.length > 0 && formURL != null && formURL.length > 0){
     var form = FormApp.openByUrl(formURL); 
     if(form != null){
-      
       var items = form.getItems();
       for(var item in items){
         if(items[item].getTitle() == 'Book Title'){
@@ -210,10 +209,17 @@ function loaner_updateBookTitle(){
 function loaner_getCurrentHavesAndNeeds(){
   var currentBook = PropertiesService.getDocumentProperties().getProperty('loaner_current_book');
   //get responses from form newer than 6 months - getResponses(timestamp)
-  var form = FormApp.openByUrl(PropertiesService.getDocumentProperties().getProperty('loaner_form_url'));
+  var url = PropertiesService.getDocumentProperties().getProperty('loaner_form_url');
+  if(url == null || url.length <= 0){
+    return [[],[]];
+  }
+  var form = FormApp.openByUrl(url);
   var minimumDate = new Date();
   minimumDate.setMonth(minimumDate.getMonth() - 6);
   var responses = form.getResponses(minimumDate);
+  if(responses.length <= 0){
+    return [[],[]];
+  }
   
   var titleItem = null;
   var typeItem = null;
