@@ -118,7 +118,7 @@ function vote_getUpdate(){
   var responseCount = 0;
   var currentLeader = 'undetermined';
     
-  var ballotURL = documentProperties.getProperty('suggestion_form_url');
+  var ballotURL = documentProperties.getProperty('vote_form_url');
   if(ballotURL != null && ballotURL.length > 0){
     var form = FormApp.openByUrl(ballotURL);
     responseCount = form.getResponses().length;
