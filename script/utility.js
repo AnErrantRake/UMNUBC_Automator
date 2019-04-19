@@ -18,7 +18,7 @@ function includes(scriptURI){
 }
 
 function isInstalled(){
-  if( PropertiesService.getDocumentProperties().getProperty('AutomatorInstalled') ){
+  if( PropertiesService.getScriptProperties().getProperty('AutomatorInstalled') ){
     return true;
   }
   return false;
@@ -26,6 +26,16 @@ function isInstalled(){
 
 function getVersion(){
   return PropertiesService.getScriptProperties().getProperty('version');
+}
+
+function setVersion(){
+  var response = SpreadsheetApp.getUi().prompt("Set Automator Version",
+                                      "Manually update the automator to use the specified version. Currently using version " + getVersion(),
+                                      SpreadsheetApp.getUi().ButtonSet.OK_CANCEL);
+  if (response.getSelectedButton() == SpreadsheetApp.getUi().Button.OK
+      && response.getResponseText().length > 0){
+    PropertiesService.getScriptProperties().setProperty('version', response.getResponseText());
+  }
 }
 
 function propertyNuke(){

@@ -15,6 +15,7 @@ function buildMenu(){
         {name: 'Configure Automator', functionName: 'configState'},
         {name: 'Force Update', functionName: 'install_forceUpdate'},
         {name: 'Generate Loaner Form', functionName: 'genLoaner'},
+        {name: 'Set Automator Version', functionName: 'setVersion'},
       ]
     },
     'install' : {
