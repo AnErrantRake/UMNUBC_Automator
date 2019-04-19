@@ -1,32 +1,18 @@
-function dashboard() {
-  util_guaranteeScriptsAvailable();
-  
-  var dashboard = util_getContainerSpreadsheet().getSheetByName(
-    PropertiesService.getScriptProperties().getProperty('DASHBOARD_SHEETNAME'));
-  dashboard_updateValues();
-  dashboard_updateFields(dashboard);
-}
-
-function dashboard_updateValues(){
-  loaner_getUpdate();
-  suggestion_getUpdate();
-  vote_getUpdate();
-}
-
-function dashboard_updateFields(dashboard){
+function updateDashboard(){
+  var dashboard = SpreadsheetApp.getActive().getActiveSheet();
   var publicProperties = PropertiesService.getDocumentProperties().getProperties();
   var scriptProperties = PropertiesService.getScriptProperties().getProperties();
-  
+
   var range = dashboard.getRange(1, 2, dashboard.getMaxRows(), 2);
   range.clear();
   range.clearNote();
-  
+
   var sortedKeys = Object.keys(publicProperties).sort();
   //add additional rows as necessary
   if(dashboard.getMaxRows() < sortedKeys.length){
     dashboard.insertRowsAfter(scriptProperties['INSTALL_NOTIFIER_LENGTH'],sortedKeys.length - scriptProperties['INSTALL_NOTIFIER_LENGTH']);
   }
-  
+
   var rangeValues = [];
   var rangeNotes = [];
   for(var i = 0; i < sortedKeys.length; i++){

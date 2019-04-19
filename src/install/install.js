@@ -2,6 +2,7 @@ var Install = function(){
   includes('src/common/properties/document.js');
   includes('src/common/properties/script.js');
   includes('src/common/properties/user.js');
+  includes('src/ui/dashboard.js');
 
   this.container = SpreadsheetApp.getActive();
   this.dashboard = this.container.getActiveSheet();
@@ -30,7 +31,7 @@ var Install = function(){
     this.dashboard.deleteRows(1, this.dashboard.getMaxRows()-1);
 
     // remove menu
-    this.container.removeMenu('install');
+    this.container.removeMenu('Install');
 
     // remove old triggers
     var oldTriggers = ScriptApp.getUserTriggers(this.container);
@@ -69,16 +70,21 @@ var Install = function(){
 
   // fills all fields
   this.init = function(){
-    // configState();
-    // configSecrets();
-    //
-    // genLoaner();
-    // // add triggers
-    // //add new triggers
-    // ScriptApp.newTrigger('dashboard')
-    //   .forSpreadsheet(this.container)
-    //   .onOpen()
-    //   .create();
+    // notifier
+    var readyCell = this.dashboard.getRange('A1');
+    readyCell.setValue(PropertiesService.getScriptProperties().getProperty('INSTALL_DASHBOARD_NOTIFER'));
+    readyCell.setNote(PropertiesService.getScriptProperties().getProperty('INSTALL_DASHBOARD_NOTIFIER_NOTE'));
+    //format notifier text
+    readyCell.setFontSize(25);
+    readyCell.setFontWeight('bold');
+    readyCell.setHorizontalAlignment('center');
+    readyCell.setVerticalAlignment('middle');
+    readyCell.setWrap(true);
+    readyCell.setBackground('black');
+    readyCell.setFontColor('white');
+
+    // dashboard fields
+    updateDashboard();
 
     return this;
   }
