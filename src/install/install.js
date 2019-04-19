@@ -12,9 +12,6 @@ var Install = function(){
     PropertiesService.getScriptProperties().deleteAllProperties();
     PropertiesService.getUserProperties().deleteAllProperties();
 
-    console.log("step");
-
-    console.log(this.container);
     // disconnect forms
     var form = this.container.getFormUrl();
     if(form != null){
@@ -46,23 +43,27 @@ var Install = function(){
 
   // builds all fields
   this.pave = function(){
-    // // add properties
-    //
-    // // add dashboard
-    // install_buildDashboard(this.container.getActiveSheet());
-    // this.dashboard.insertColumnsAfter(1,2);
-    // this.dashboard.setColumnWidths(1,3,200);
-    // //add menu notifier block rows
-    // this.dashboard.insertRowsAfter(1,propServ.getProperty('INSTALL_NOTIFIER_LENGTH')-1);
-    // //format menu notifier cell
-    // var infoCell = this.dashboard.getRange('A1:A' + Math.floor(propServ.getProperty('INSTALL_NOTIFIER_LENGTH')));
-    // infoCell.merge();
-    //
-    // // add menus
-    //
-    //
-    // PropertiesService.getDocumentProperties().setProperty('is_installed', true);
-    //
+    // add properties
+    resetDocumentProperties();
+    resetScriptProperties();
+    resetUserProperties();
+    PropertiesService.getDocumentProperties().setProperty('AutomatorInstalled', true);
+
+    // add dashboard
+    this.dashboard.insertColumnsAfter(1,2);
+    this.dashboard.setColumnWidths(1,3,200);
+    //add menu notifier block rows
+    this.dashboard.insertRowsAfter(1,
+      PropertiesService.getScriptProperties().getProperty('INSTALL_NOTIFIER_LENGTH')-1);
+    //format menu notifier cell
+    var infoCell = this.dashboard.getRange('A1:A' + Math.floor(
+      PropertiesService.getScriptProperties().getProperty('INSTALL_NOTIFIER_LENGTH'))
+    );
+    infoCell.merge();
+
+    // add menus
+    buildMenu();
+
     return this;
   }
 

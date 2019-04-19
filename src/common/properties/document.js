@@ -1,6 +1,6 @@
 function getDefaultDocumentProperties(){
     return {
-      is_installed: false,
+      AutomatorInstalled: false,
       vote_form_url: '',
       vote_count: '',
       vote_current_leader: '',
