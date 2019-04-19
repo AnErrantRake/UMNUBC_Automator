@@ -20,17 +20,15 @@ function buildMenu(){
     'install' : {
       name: 'Automator Install',
       entries: [
-        {name: 'Install', functionName: 'install'},
+        {name: 'Install', functionName: 'appInstall'},
       ]
     },
   }
 
-  if(isInstalled()){
+  if( isInstalled() ) {
     SpreadsheetApp.getActive().addMenu(MENU_MAP['main'].name, MENU_MAP['main'].entries);
     SpreadsheetApp.getActive().addMenu(MENU_MAP['setup'].name, MENU_MAP['setup'].entries);
-  }
-  else{
-    includes('src/run_install.js');
+  } else {
     SpreadsheetApp.getActive().addMenu(MENU_MAP['install'].name, MENU_MAP['install'].entries);
     return false;
   }

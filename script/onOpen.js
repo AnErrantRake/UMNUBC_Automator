@@ -1,5 +1,5 @@
 function onOpen(e) {
   if(buildMenu()){
-    updateDashboard();
+    // updateDashboard();
   }
 }

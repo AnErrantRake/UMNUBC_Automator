@@ -1,3 +1,3 @@
 function getBuildVersion(){
-  return 0_3;
+  return '0_3';
 }
