@@ -12,6 +12,9 @@ var Install = function(){
     PropertiesService.getScriptProperties().deleteAllProperties();
     PropertiesService.getUserProperties().deleteAllProperties();
 
+    console.log("step");
+
+    console.log(this.container);
     // disconnect forms
     var form = this.container.getFormUrl();
     if(form != null){
