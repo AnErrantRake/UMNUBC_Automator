@@ -27,3 +27,9 @@ function isInstalled(){
 function getVersion(){
   return PropertiesService.getScriptProperties().getProperty('version');
 }
+
+function propertyNuke(){
+  PropertiesService.getDocumentProperties().deleteAllProperties();
+  PropertiesService.getScriptProperties().deleteAllProperties();
+  PropertiesService.getUserProperties().deleteAllProperties();
+}

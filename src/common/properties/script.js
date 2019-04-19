@@ -1,5 +1,6 @@
 function getDefaultScriptProperties(){
   return {
+    AutomatorInstalled: false,
     version:'dev',
 
     INSTALL_WARNING_TITLE:'Installing the Automator is HIGHLY DESTRUCTIVE!',

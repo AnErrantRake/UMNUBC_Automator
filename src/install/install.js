@@ -10,10 +10,8 @@ var Install = function(){
 
   this.nuke = function(){
     // wipe properties
-    PropertiesService.getDocumentProperties().deleteAllProperties();
-    PropertiesService.getScriptProperties().deleteAllProperties();
-    PropertiesService.getUserProperties().deleteAllProperties();
-
+    propertyNuke();
+    
     // disconnect forms
     var form = this.container.getFormUrl();
     if(form != null){
