@@ -3,10 +3,12 @@ function updateDashboard(){
   var publicProperties = PropertiesService.getDocumentProperties().getProperties();
   var scriptProperties = PropertiesService.getScriptProperties().getProperties();
 
+  // get range and clear
   var range = dashboard.getRange(1, 2, dashboard.getMaxRows(), 2);
   range.clear();
   range.clearNote();
 
+  // alphabetize properties
   var sortedKeys = Object.keys(publicProperties).sort();
   //add additional rows as necessary
   if(dashboard.getMaxRows() < sortedKeys.length){

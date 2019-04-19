@@ -37,7 +37,6 @@ function getDefaultScriptProperties(){
     DASHBOARD_SHEETNAME:'Dashboard',
 
     //descriptions for public properties - property name + '_desc'
-    is_installed_desc:'Whether or not the automator has been successfully installed.',
     vote_form_url_desc:'Direct link to edit version of the current ballot form.',
     vote_count_desc:'Count of responses on ballot form.',
     vote_current_leader_desc:'Title and author of current vote leader.',

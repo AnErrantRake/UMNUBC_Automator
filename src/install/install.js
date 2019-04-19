@@ -11,7 +11,7 @@ var Install = function(){
   this.nuke = function(){
     // wipe properties
     propertyNuke();
-    
+
     // disconnect forms
     var form = this.container.getFormUrl();
     if(form != null){
@@ -30,7 +30,7 @@ var Install = function(){
     this.dashboard.deleteRows(1, this.dashboard.getMaxRows()-1);
 
     // remove menu
-    this.container.removeMenu('Install');
+    this.container.removeMenu('Automator Install');
 
     // remove old triggers
     var oldTriggers = ScriptApp.getUserTriggers(this.container);
@@ -47,7 +47,7 @@ var Install = function(){
     resetDocumentProperties();
     resetScriptProperties();
     resetUserProperties();
-    PropertiesService.getDocumentProperties().setProperty('AutomatorInstalled', true);
+    PropertiesService.getScriptProperties().setProperty('AutomatorInstalled', true);
     PropertiesService.getScriptProperties().setProperty('version', getBuildVersion());
 
     // add dashboard
