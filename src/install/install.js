@@ -3,6 +3,7 @@ var Install = function(){
   includes('src/common/properties/script.js');
   includes('src/common/properties/user.js');
   includes('src/ui/dashboard.js');
+  includes('src/version.js');
 
   this.container = SpreadsheetApp.getActive();
   this.dashboard = this.container.getActiveSheet();
@@ -49,6 +50,7 @@ var Install = function(){
     resetScriptProperties();
     resetUserProperties();
     PropertiesService.getDocumentProperties().setProperty('AutomatorInstalled', true);
+    PropertiesService.getScriptProperties().setProperty('version', getBuildVersion());
 
     // add dashboard
     this.dashboard.insertColumnsAfter(1,2);
