@@ -1,6 +1,4 @@
 function genBallot() {
-  util_guaranteeScriptsAvailable();
-  
   //close old form
   var oldFormURL = PropertiesService.getDocumentProperties().getProperty('vote_form_url');
   if(oldFormURL != null && oldFormURL.length > 0){
@@ -12,16 +10,16 @@ function genBallot() {
       //do nothing, form doesn't exist
     }
   }
-  
+
   Logger.log('Generating ballot');
   var form = util_formGen(getBallotTemplate());
-  
+
   ballotGen_addQuestions(form);
-  
+
   ballotGen_updateProperties(form);
-  
+
   dashboard();
-  
+
 }
 
 function ballotGen_addQuestions(form){
@@ -35,4 +33,3 @@ function ballotGen_addQuestions(form){
 function ballotGen_updateProperties(form){
   PropertiesService.getDocumentProperties().setProperty('vote_form_url', form.getEditUrl());
 }
-

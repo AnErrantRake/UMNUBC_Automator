@@ -5,16 +5,17 @@ function buildMenu(){
       entries: [
         {name: 'Generate ballot form', functionName: 'genBallot'},
         {name: 'Generate suggestion form', functionName: 'genSuggestion'},
-        {name: 'Calculate vote winner', functionName: 'vote_calculation'},
-        {name: 'Update loaner book title', functionName: 'loaner_manualUpdate'},
+        {name: 'Calculate vote winner', functionName: 'calcVote'},
+        {name: 'Update loaner book title', functionName: 'updateLoaner'},
       ]
         },
     'setup' : {
       name: 'Automator Setup',
       entries: [
-        {name: 'Configure Automator', functionName: 'configState'},
-        {name: 'Force Update', functionName: 'install_forceUpdate'},
         {name: 'Generate Loaner Form', functionName: 'genLoaner'},
+        {name: 'Set Suggestion Form', functionName: 'setSuggestionForm'},
+        {name: 'Set Vote Form', functionName: 'setVoteForm'},
+        {name: 'Set Template Form', functionName: 'setTemplateForm'},
         {name: 'Set Automator Version', functionName: 'setVersion'},
       ]
     },

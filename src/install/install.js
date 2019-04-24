@@ -2,7 +2,6 @@ var Install = function(){
   includes('src/common/properties/document.js');
   includes('src/common/properties/script.js');
   includes('src/common/properties/user.js');
-  includes('src/ui/dashboard.js');
   includes('src/version.js');
 
   this.container = SpreadsheetApp.getActive();
@@ -29,14 +28,14 @@ var Install = function(){
     this.dashboard.deleteColumns(1, this.dashboard.getMaxColumns()-1);
     this.dashboard.deleteRows(1, this.dashboard.getMaxRows()-1);
 
-    // remove menu
-    this.container.removeMenu('Automator Install');
-
     // remove old triggers
     var oldTriggers = ScriptApp.getUserTriggers(this.container);
     for(var i = 0; i < oldTriggers.length; i++){
       ScriptApp.deleteTrigger(oldTriggers[i]);
     }
+
+    // remove menu
+    this.container.removeMenu('Automator Install');
 
     return this;
   }
@@ -83,8 +82,13 @@ var Install = function(){
     readyCell.setBackground('black');
     readyCell.setFontColor('white');
 
-    // dashboard fields
-    updateDashboard();
+    // install triggers
+    ScriptApp.newTrigger('update')
+      .forSpreadsheet(this.container)
+      .onOpen()
+      .create();
+
+    update();
 
     return this;
   }

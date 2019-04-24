@@ -1,18 +1,17 @@
 function loaner(event) {
-  util_guaranteeScriptsAvailable();
   //receipts are stored in the spreadsheet
   //possibility for collision here - if response comes in while this is running
   //could lock the form until function completes...probably not worth it
   //less disastrous error is missing a match - locking form breaks the whole thing if anything goes down
-  
-  var responseEmail = event.response.getRespondentEmail();  
+
+  var responseEmail = event.response.getRespondentEmail();
   var responseType = '';
   var responseBook = '';
   var titleItem = null;
   var typeItem = null;
-  
+
   for(var i = 0; i < event.response.getItemResponses().length; i++){
-    
+
     if(event.response.getItemResponses()[i].getItem().getTitle() == 'Book Title'){
       responseBook = event.response.getResponseForItem(event.response.getItemResponses()[i].getItem()).getResponse();
       titleItem = event.response.getItemResponses()[i].getItem();
@@ -22,7 +21,7 @@ function loaner(event) {
       typeItem = event.response.getItemResponses()[i].getItem();
     }
   }
-  
+
   //get responses from form newer than 6 months - getResponses(timestamp)
   var form = FormApp.openByUrl(PropertiesService.getDocumentProperties().getProperty('loaner_form_url'));
   if(form.getId() != event.source.getId()){
@@ -40,8 +39,8 @@ function loaner(event) {
   var minimumDate = new Date();
   minimumDate.setMonth(minimumDate.getMonth() - 6);
   var responses = form.getResponses(minimumDate);
-  
-  
+
+
   //find potential matches and check for duplicate
   var filteredResponses = [];
   for(var i = 0; i < responses.length; i++){
@@ -63,7 +62,7 @@ function loaner(event) {
               responses[i].getResponseForItem(typeItem).getResponse() == 'Need'){
         filteredResponses.push(responses[i]);
       }
-      
+
     }
   }
   filteredResponses.sort(loaner_timestampCompare);
@@ -71,14 +70,14 @@ function loaner(event) {
   for(var i = 0; i < filteredResponses.length; i++){
     potentials.push(filteredResponses[i].getRespondentEmail());
   }
-    
+
   var receiptHeader = ['Have','Need','Book','Date'];
   var receiptsSheet = SpreadsheetApp.getActive().getSheetByName('Receipts');
   if(receiptsSheet == null){
     receiptsSheet = SpreadsheetApp.getActive().insertSheet('Receipts');
     receiptsSheet.deleteColumns(receiptHeader.length+1, receiptsSheet.getMaxColumns()-receiptHeader.length);
     receiptsSheet.appendRow(receiptHeader);
-    
+
     util_sendEmail(
       [responseEmail],
       [],
@@ -89,8 +88,8 @@ function loaner(event) {
     Logger.log("No match found - emailing status and exiting");
     return;
   }
-  
-  //pull receipts from spreadsheet    
+
+  //pull receipts from spreadsheet
     //filter responses for opposites < 6 months
   var dataset = receiptsSheet.getDataRange().getValues().filter(loaner_isCurrent);
   var receiptEmails = [];
@@ -104,14 +103,14 @@ function loaner(event) {
       receiptEmails.push(dataset[i][0]);
     }
   }
-  
+
   //check for available opposite
     //list of valid -> responses without a receipt
   var validContacts = [];
   var validContacts = potentials.filter(function(val) {
     return receiptEmails.indexOf(val) == -1;
   });
-  
+
   //notify
     //email response, if match, both on cc
     //bcc owner email
@@ -125,7 +124,7 @@ function loaner(event) {
       PropertiesService.getScriptProperties().getProperty('LOANER_EMAIL_SUCCESS_SUBJECT') + responseBook,
       PropertiesService.getScriptProperties().getProperty('LOANER_EMAIL_SUCCESS_BODY')
     );
-    
+
   //add receipt
     //append row w/ transaction data
     if(responseType == 'Have'){
@@ -147,13 +146,13 @@ function loaner(event) {
       PropertiesService.getScriptProperties().getProperty('LOANER_EMAIL_' + responseType.toUpperCase() + '_BODY')
     );
   }
-  
+
 }
 
 function loaner_isCurrent(dataRow){
   var minimumDate = new Date();
   minimumDate.setMonth(minimumDate.getMonth() - 6);
-  
+
   var date = new Date(dataRow[3]);
   if(date < minimumDate){
     return false;
@@ -174,8 +173,6 @@ function loaner_timestampCompare(a,b){
 }
 
 function loaner_manualUpdate(){
-  util_guaranteeScriptsAvailable();
-  
   var response = util_PublicPropertyPrompt('loaner_current_book');
   if(response.getSelectedButton() == SpreadsheetApp.getUi().Button.CANCEL){
     return;
@@ -189,11 +186,11 @@ function loaner_manualUpdate(){
 
 function loaner_updateBookTitle(){
   var documentProperties = PropertiesService.getDocumentProperties();
-  
+
   var formURL = documentProperties.getProperty('loaner_form_url');
   var bookTitle = documentProperties.getProperty('loaner_current_book');
   if(bookTitle != null && bookTitle.length > 0 && formURL != null && formURL.length > 0){
-    var form = FormApp.openByUrl(formURL); 
+    var form = FormApp.openByUrl(formURL);
     if(form != null){
       var items = form.getItems();
       for(var item in items){
@@ -220,12 +217,12 @@ function loaner_getCurrentHavesAndNeeds(){
   if(responses.length <= 0){
     return [[],[]];
   }
-  
+
   var titleItem = null;
   var typeItem = null;
-  
+
   for(var i = 0; i < responses[0].getItemResponses().length; i++){
-    
+
     if(responses[0].getItemResponses()[i].getItem().getTitle() == 'Book Title'){
       titleItem = responses[0].getItemResponses()[i].getItem();
     }
@@ -233,7 +230,7 @@ function loaner_getCurrentHavesAndNeeds(){
       typeItem = responses[0].getItemResponses()[i].getItem();
     }
   }
-  
+
   //find potential matches and check for duplicate
   var currentHaves = [];
   var currentNeeds = [];
@@ -265,7 +262,7 @@ function loaner_getUpdate(){
   var documentProperties = PropertiesService.getDocumentProperties();
   var responses = [];
   var havesAndNeeds = loaner_getCurrentHavesAndNeeds();
-  
+
   documentProperties.setProperty('loaner_have_count', havesAndNeeds[0].length);
   documentProperties.setProperty('loaner_need_count', havesAndNeeds[1].length);
   documentProperties.setProperty('loaner_matches_count', loaner_getCurrentMatchCount());

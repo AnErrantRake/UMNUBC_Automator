@@ -1,6 +1,4 @@
 function genSuggestion() {
-  util_guaranteeScriptsAvailable();
-  
   //close old form
   var oldFormURL = PropertiesService.getDocumentProperties().getProperty('suggestion_form_url');
   if(oldFormURL != null && oldFormURL.length > 0){
@@ -12,14 +10,14 @@ function genSuggestion() {
       //do nothing, form doesn't exist
     }
   }
-  
+
   Logger.log('Generating suggestion form');
   var form = util_formGen(getSuggestionTemplate());
-  
+
   suggestionGen_updateProperties(form);
-  
+
   dashboard();
-  
+
 }
 
 function suggestionGen_updateProperties(form){
