@@ -1,6 +1,11 @@
 function vote_calculation(){
-  util_guaranteeScriptsAvailable();
-    
+
+  // if form doesn't exist, return silently
+  var formURL = PropertiesService.getDocumentProperties().getProperty('vote_form_url');
+  if(formURL == null || !(formURL.length > 0)){
+    return;
+  }
+  
   var winner = vote_calculator();
   if(winner[1]){
     util_Notice('VOTE_CALC_TIE_TITLE', 'VOTE_CALC_TIE_DESC', winner[0]);
@@ -9,7 +14,7 @@ function vote_calculation(){
     util_Notice('VOTE_CALC_WINNER_TITLE', 'VOTE_CALC_WINNER_DESC', winner[0]);
   }
   
-  dashboard();
+  updateDashboard();
 }
 
 function vote_calculator(){
@@ -92,7 +97,7 @@ function vote_calculator(){
   var winner = winnerList[0];
   var tie = false;
   if(winnerList.length > 1){
-    winner = util_concatArrayComma(winnerList);
+    winner = winnerList.join(', ');
     tie = true;
   }
   
@@ -112,7 +117,6 @@ function vote_compare(a,b){
 }
 
 function vote_getUpdate(){
-  util_guaranteeScriptsAvailable();
   Logger.log("Updating vote data");
   var documentProperties = PropertiesService.getDocumentProperties();
   var responseCount = 0;

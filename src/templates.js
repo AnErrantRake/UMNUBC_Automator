@@ -87,7 +87,7 @@ function getBallotTemplate() {
   return {
     header : {
       title : (util_getNextMonth() + ' Book Voting'),
-      desc : 'Thanks to everybody that suggested books to read!\n\nOur voting system works like this: if you vote a 0 or a 1, you are voting against that book. If you vote a 3 or a 4, you are voting for that book (to their respective degrees). 2 (or a non-vote) is neutral -- when you don\'t really care either way if we read the book or not.'
+      desc : 'Thanks to everybody that suggested books to read!\n\nOur voting system works like this: if you vote a 0 or a 1, you are voting against that book. If you vote a 3 or a 4, you are voting for that book (to their respective degrees). 2 is neutral -- when you don\'t really care either way if we read the book or not. You don\'t need to vote on every option.'
     },
     sections : {
      section1 : {
