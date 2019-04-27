@@ -24,7 +24,7 @@ function getLoanerTemplate() {
           allowResponseEdits : false,
           confirmationMessage : 'If this is your first time submitting for this book, you should receive an email response.',
           isQuiz : false,
-          limitOneResponsePerUser : true,
+          limitOneResponsePerUser : false,
           progressBar : false,
           publishingSummary : false,
           showLinkToRespondAgain : false,
