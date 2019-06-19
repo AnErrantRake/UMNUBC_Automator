@@ -1,9 +1,13 @@
 function genSuggestion() {
-  util_guaranteeScriptsAvailable();
-  
   //close old form
   var oldFormURL = PropertiesService.getDocumentProperties().getProperty('suggestion_form_url');
   if(oldFormURL != null && oldFormURL.length > 0){
+    
+    var response = util_Warning('GENERATOR_WARNING_TITLE','GENERATOR_WARNING_DESC');
+    if(response == SpreadsheetApp.getUi().Button.NO){
+      return;
+    }
+    
     try {
       var oldForm = FormApp.openByUrl(oldFormURL);
       oldForm.setAcceptingResponses(false);
@@ -14,11 +18,11 @@ function genSuggestion() {
   }
   
   Logger.log('Generating suggestion form');
-  var form = util_formGen(getSuggestionTemplate());
+  var form = formGenerator(getSuggestionTemplate());
   
   suggestionGen_updateProperties(form);
   
-  dashboard();
+  updateDashboard();
   
 }
 

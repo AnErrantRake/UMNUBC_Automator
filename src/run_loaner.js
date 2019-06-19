@@ -1,5 +1,4 @@
 function loaner(event) {
-  util_guaranteeScriptsAvailable();
   //receipts are stored in the spreadsheet
   //possibility for collision here - if response comes in while this is running
   //could lock the form until function completes...probably not worth it
@@ -173,18 +172,10 @@ function loaner_timestampCompare(a,b){
   return comparison;
 }
 
-function loaner_manualUpdate(){
-  util_guaranteeScriptsAvailable();
-  
-  var response = util_PublicPropertyPrompt('loaner_current_book');
-  if(response.getSelectedButton() == SpreadsheetApp.getUi().Button.CANCEL){
-    return;
-  }
-  else if (response.getResponseText().length > 0){
-    PropertiesService.getDocumentProperties().setProperty('loaner_current_book', response.getResponseText());
-    loaner_updateBookTitle();
-    dashboard();
-  }
+function loaner_manualUpdate(){  
+  util_PublicPropertyPrompt('loaner_current_book');
+  loaner_updateBookTitle();
+  updateDashboard();
 }
 
 function loaner_updateBookTitle(){

@@ -1,21 +1,19 @@
 function genLoaner() {
-  util_guaranteeScriptsAvailable();
-  
   var oldFormURL = PropertiesService.getDocumentProperties().getProperty('loaner_form_url'); 
-  if(oldFormURL != null && oldFormURL.length > 0){
-    var response = util_Warning('LOANERGEN_WARNING_TITLE','LOANERGEN_WARNING_DESC');
+  if(oldFormURL != null && oldFormURL.length > 0){    
+    var response = util_Warning('GENERATOR_WARNING_TITLE','GENERATOR_WARNING_DESC');
     if(response == SpreadsheetApp.getUi().Button.NO){
       return;
     }
   }
   
-  var form = util_formGen(getLoanerTemplate());
+  var form = formGenerator(getLoanerTemplate());
   
   loanerGen_installTriggers(form,oldFormURL);
   loanerGen_updateProperties(form);
   loaner_updateBookTitle();
   
-  dashboard();
+  updateDashboard();
 }
 
 function loanerGen_installTriggers(form,oldFormURL){

@@ -1,3 +1,16 @@
+function isInstalled(){
+  if(PropertiesService.getScriptProperties().getProperty('AutomatorInstalled')){
+    return true;
+  }
+  return false;
+}
+
+function propertyNuke(){
+  PropertiesService.getDocumentProperties().deleteAllProperties();
+  PropertiesService.getScriptProperties().deleteAllProperties();
+  PropertiesService.getUserProperties().deleteAllProperties();
+}
+
 function util_getContainerSpreadsheet(){
   var database = SpreadsheetApp.getActive();
   if(database == null){
@@ -5,67 +18,6 @@ function util_getContainerSpreadsheet(){
   }
   return database;
 }
-
-function util_guaranteeScriptsAvailable(){
-  var is_installed = PropertiesService.getDocumentProperties().getProperty('is_installed');
-  if(is_installed == null){
-    resetScriptProperties();
-  }
-}
-
-function util_isInstalled(){
-  var scriptProperties = PropertiesService.getScriptProperties();
-  
-  if( ! PropertiesService.getDocumentProperties().getProperty('is_installed') ){
-    SpreadsheetApp.getUi().alert(
-      scriptProperties.getProperty('OUTOFORDER_TITLE'), 
-      scriptProperties.getProperty('OUTOFORDER_DESC'), 
-      SpreadsheetApp.getUi().ButtonSet.OK
-    );
-    throw new Error(scriptProperties.getProperty('ERROR_NOT_INSTALLED'));
-    return false;
-  }
-  return true;
-}
-
-function util_formGen(template){
-  var templateURL = PropertiesService.getDocumentProperties().getProperty('template_form_url');
-  
-  //get form and update main header
-  if(templateURL != null && templateURL.length > 0){
-    var templateForm = FormApp.openByUrl(templateURL);
-    var formID = DriveApp.getFileById(templateForm.getId()).makeCopy().setName(template.header.title).getId();
-    var form = FormApp.openById(formID); //gross - probably a better way to cast
-    
-    form.setTitle(template.header.title);
-    form.deleteAllResponses();
-    var items = form.getItems();
-    for(var i = 0; i < items.length; i++){
-      form.deleteItem(items[i]);
-    }
-  }
-  else{
-    var form = FormApp.create(template.header.title);
-  }
-  form.setDescription(template.header.desc);
-  
-  //sections and items
-  for(var section in template.sections){
-    for(var item in template.sections[section].items){
-      //create item
-      gen_addItem(template.sections[section].items[item], form);
-    }
-  }
-  
-  //options
-  gen_addOptions(template.options,form);
-  
-  //metadata
-  
-  
-  return form;
-}
-
 
 function util_Warning(title,desc){
   var scriptProperties = PropertiesService.getScriptProperties();
@@ -84,16 +36,41 @@ function util_Notice(title, desc, info){
                                       SpreadsheetApp.getUi().ButtonSet.OK);
 }
 
+function util_friendlyPropertyUpdate(key){
+  var reminder = SpreadsheetApp.getUi().alert(
+    PropertiesService.getScriptProperties().getProperty('FRIENDLY_UPDATE_TITLE'), 
+    key + ' ' + PropertiesService.getScriptProperties().getProperty('FRIENDLY_UPDATE_DESC'), 
+    SpreadsheetApp.getUi().ButtonSet.YES_NO);
+  if(reminder === SpreadsheetApp.getUi().Button.NO){
+    // no change/prompt ignored
+    return;
+  }
+  else{
+    // update and return
+    util_PublicPropertyPrompt(key);
+    return PropertiesService.getDocumentProperties().getProperty(key);
+  }
+}
+
 function util_PublicPropertyPrompt(key){
   var documentProperties = PropertiesService.getDocumentProperties();
   var scriptProperties = PropertiesService.getScriptProperties();
   
   var desc = scriptProperties.getProperty(key+'_desc');         //description
   desc += '\n\nCurrent:' + documentProperties.getProperty(key); //current value
-  desc += '\n\nLeave blank to make no changes. Press OK to continue. Press Cancel to quit without making changes.' //instructions
-  return SpreadsheetApp.getUi().prompt(key, 
+  desc += '\n\nPress Cancel to quit without making changes.' //instructions
+  var response = SpreadsheetApp.getUi().prompt(key, 
                                       desc, 
                                       SpreadsheetApp.getUi().ButtonSet.OK_CANCEL);
+  if(response.getSelectedButton() === SpreadsheetApp.getUi().Button.CANCEL){
+    throw new Error('No change');
+  }
+  else if (response.getResponseText().length > 0){
+    documentProperties.setProperty(key, response.getResponseText());
+  }
+  else{
+    throw new Error('Input is required!');
+  }
 }
 
 function util_PrivatePropertyPrompt(key){
@@ -106,9 +83,9 @@ function util_PrivatePropertyPrompt(key){
 }
 
 function util_sendEmail(toList,ccList,bccList,subject,body){
-  var to = util_concatArrayComma(toList);
-  var cc = util_concatArrayComma(ccList);
-  var bcc = util_concatArrayComma(bccList);
+  var to = toList.join(', ');
+  var cc = ccList.join(', ');
+  var bcc = bccList.join(', ');
   
   Logger.log("Sending email to: " + to + cc + bcc);
   MailApp.sendEmail(
@@ -117,15 +94,6 @@ function util_sendEmail(toList,ccList,bccList,subject,body){
     body,
     {cc: cc, bcc: bcc, name: 'UMNUBC Automator'}
   );
-}
-
-function util_getDefaultCoverItem(){
-  return {
-    header : {title : '', desc : ''},
-    image : util_getImage('https://picsum.photos/300/300'),
-    options : {alignment : FormApp.Alignment.CENTER, width : 300}, 
-    type : FormApp.ItemType.IMAGE
-  };
 }
 
 function util_getImage(url){
@@ -153,54 +121,39 @@ function util_fetchData(url){
                                  );
   
   if (bookRaw.getResponseCode() == 200) {
+    Logger.log('Data returned successfully');
     return JSON.parse(bookRaw.getContentText());
   }
   
   return -1;
 }
 
-//takes an array and makes it a \n separated string - might be replacable w/ .toString()
-function util_concatArray(array){
-  
-  var out = '';
-  
-  for(var i = 0; i<array.length; i++){
-    out = out + array[i] + '\n'
-  }
-  
-  return out;
-}
-
-
-//takes an array and makes it a comma separated string
-function util_concatArrayComma(array){
-  
-  var out = '';
-  
-  for(var i = 0; i<array.length; i++){
-    out = out + array[i] + ', '
-  }
-  
-  return out;
-}
-
-
 //simple comparison with logging
 //partials disallowed for titles
-function util_hasTitle(itemTitle, title){
-  
-    if(itemTitle === title){
-      Logger.log('Has title');
-      return true;
-    }
+function util_hasTitle(itemTitle, title){  
+  if(itemTitle.toUpperCase().indexOf(title.toUpperCase()) >= 0){
+    Logger.log('Has title');
+    return true;
+  }
   
   return false;
 }
 
 
 //checks all fields of result item for response author
-//does not handle multiple authors in response
 function util_hasAuthor(itemAuthors,author){
+  
+  //check for multiple authors - simple ' and ' for now
+  var multi = author.split(' and ');
+  if(multi.length > 1){
+    return util_multiAuthors(itemAuthors,multi);
+  }
+  
+  //check for commas
+  var multi = author.split(',');
+  if(multi.length > 1){
+    return util_multiAuthors(itemAuthors,multi);
+  }
   
   //divide author into individual words
   var authorSplit = author.split(' ');
@@ -213,18 +166,28 @@ function util_hasAuthor(itemAuthors,author){
     //for each word in response author's name
     for(var j = 0; j < authorSplit.length; j++){
       
-      if(itemAuthors[i].indexOf(authorSplit[j])>=0){
+      if(itemAuthors[i].toUpperCase().indexOf(authorSplit[j].toUpperCase())>=0){
         successTracker++;
       }
     }
     
     //found a match for all components of author's name
-    if(successTracker == authorSplit.length){
-      Logger.log('Has author');
+    if(successTracker > Math.floor(authorSplit.length / 2)){
+      Logger.log('Has author'); //majority of components are present
       return true;
     }
   }
   return false;
+}
+
+//for handling multiple authors in response
+function util_multiAuthors(itemAuthors, multiAuthors){
+  var result = false;
+  
+  for(var i = 0; i < multiAuthors.length; i++){
+    result = result || util_hasAuthor(itemAuthors, multiAuthors[i]);
+  }
+  return result;
 }
 
 //returns name of next month based on current time

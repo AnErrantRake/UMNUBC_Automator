@@ -1,10 +1,12 @@
-function dashboard() {
-  util_guaranteeScriptsAvailable();
-  
-  var dashboard = util_getContainerSpreadsheet().getSheetByName(
-    PropertiesService.getScriptProperties().getProperty('DASHBOARD_SHEETNAME'));
-  dashboard_updateValues();
-  dashboard_updateFields(dashboard);
+function updateDashboard() {
+  if(isInstalled()){
+    var dashboard = util_getContainerSpreadsheet().getSheetByName('Dashboard');
+    dashboard_updateValues();
+    dashboard_updateFields(dashboard);
+  }
+  else{
+    throw new Error("System is misconfigured. Recommend reinstalling");
+  }
 }
 
 function dashboard_updateValues(){
@@ -24,7 +26,8 @@ function dashboard_updateFields(dashboard){
   var sortedKeys = Object.keys(publicProperties).sort();
   //add additional rows as necessary
   if(dashboard.getMaxRows() < sortedKeys.length){
-    dashboard.insertRowsAfter(scriptProperties['INSTALL_NOTIFIER_LENGTH'],sortedKeys.length - scriptProperties['INSTALL_NOTIFIER_LENGTH']);
+    var installClass = new Install();
+    dashboard.insertRowsAfter(installClass.notifier_length, sortedKeys.length - installClass.notifier_length);
   }
   
   var rangeValues = [];
